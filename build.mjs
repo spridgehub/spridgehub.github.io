@@ -28,7 +28,7 @@ const GROUPS = [
     { name: 'Pension Planner', desc: 'Money', url: 'https://spridgehub.github.io/pension-planner/', repo: 'spridgehub/pension-planner', code: 'https://github.com/spridgehub/pension-planner' },
   ] },
   { id: 'plates', title: 'Plates', gloss: 'Training plates and food log', items: [
-    { name: 'Plates', desc: 'Fitness', url: 'https://spridgehub.github.io/plates/', repo: 'spridgehub/plates', pending: 'waiting for the repo to be created' },
+    { name: 'Plates', desc: 'Fitness', url: 'https://spridgehub.github.io/plates/', repo: 'spridgehub/plates', code: 'https://github.com/spridgehub/plates' },
   ] },
 ];
 const privatePath = new URL('./private-groups.json', import.meta.url);
