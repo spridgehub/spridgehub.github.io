@@ -1,6 +1,6 @@
 {
  "spridgehub/posh-on-paper": {
-  "pushed": "2026-10-24T16:05:51Z",
+  "pushed": "2026-10-24T20:46:34Z",
   "weeks": [
    0,
    0,
@@ -13,11 +13,11 @@
    0,
    0,
    12,
-   9
+   10
   ]
  },
  "spridgehub/liverpool-look-back": {
-  "pushed": "2026-10-23T22:06:24Z",
+  "pushed": "2026-10-24T20:48:40Z",
   "weeks": [
    0,
    0,
@@ -30,11 +30,11 @@
    0,
    0,
    7,
-   8
+   9
   ]
  },
  "spridgehub/Brighton-pier-review": {
-  "pushed": "2026-10-23T22:06:23Z",
+  "pushed": "2026-10-24T20:47:37Z",
   "weeks": [
    0,
    0,
@@ -47,11 +47,11 @@
    0,
    0,
    0,
-   4
+   5
   ]
  },
  "spridgehub/Forest-facts": {
-  "pushed": "2026-10-23T21:06:30Z",
+  "pushed": "2026-10-24T20:49:12Z",
   "weeks": [
    0,
    0,
@@ -64,11 +64,11 @@
    0,
    0,
    4,
-   9
+   10
   ]
  },
  "spridgehub/Hoops-history": {
-  "pushed": "2026-10-23T11:41:30Z",
+  "pushed": "2026-10-24T20:49:46Z",
   "weeks": [
    0,
    0,
@@ -81,7 +81,7 @@
    0,
    0,
    3,
-   8
+   9
   ]
  },
  "f1inlap/f1inlap-weekends": {
@@ -102,7 +102,7 @@
   ]
  },
  "spridgehub/traintimes-live": {
-  "pushed": "2026-10-24T20:20:30Z",
+  "pushed": "2026-10-24T21:00:25Z",
   "weeks": [
    0,
    0,
@@ -115,7 +115,7 @@
    0,
    0,
    0,
-   66
+   68
   ]
  },
  "spridgehub/forkcast": {
@@ -136,7 +136,7 @@
   ]
  },
  "spridgehub/pension-planner": {
-  "pushed": "2026-10-24T20:29:40Z",
+  "pushed": "2026-10-24T21:08:04Z",
   "weeks": [
    0,
    0,
@@ -149,7 +149,7 @@
    0,
    0,
    0,
-   3
+   5
   ]
  }
 }
