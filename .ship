@@ -1,0 +1,5 @@
+REPO=spridgehub/spridgehub.github.io
+BUILD="node build.mjs"
+BRANCH=main
+PAGES=/docs
+SITE=https://spridgehub.github.io/

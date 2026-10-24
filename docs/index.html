@@ -1,0 +1,247 @@
+<!doctype html><html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}[hidden]{display:none!important}</style></head><body><title>spridgehub</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400..750&family=Geist+Mono:wght@400..700&display=swap">
+<style>
+/* INLAP design language (f1-content/site/assets/brand.css): carbon surfaces, borders-only depth,
+   Geist UI with Geist Mono for addresses and numbers, blue as the one interface accent,
+   6/12px radii, full pill buttons, ease-out motion.
+   Layout: a plain sticky nav; a one-line pulse of the whole hub; then one tile per project.
+   Each tile carries its own 12-week commit bars (the rising-bars mark, made of real data),
+   its status and its actions. Multi-site projects get a double-width tile with a row per site. */
+:root {
+  --font-ui: "Geist", -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-num: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --page: #0b0b0d; --panel: #111115; --raised: #17171c; --inset: #08080a;
+  --rule: rgb(255 255 255 / .08); --rule-strong: rgb(255 255 255 / .14);
+  --ink-1: #f1f1f3; --ink-2: #c3c3cb; --ink-3: #8f8f99; --ink-4: #80808c;
+  --accent: #3671c6; --accent-ink: #6f9de0; --on-accent: #fbfbfc;
+  --good: #14a090; --caution: #ffd400; --bad: #e5484d;
+  --good-bg: rgb(20 160 144 / .14); --caution-bg: rgb(255 212 0 / .12); --bad-bg: rgb(229 72 77 / .14);
+  --r-control: 6px; --r-panel: 12px; --r-pill: 999px;
+  --ease-out: cubic-bezier(.23, 1, .32, 1);
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --page: #f3f3f4; --panel: #fafafb; --raised: #e9e9ec; --inset: #eeeef0;
+    --rule: rgb(17 17 20 / .10); --rule-strong: rgb(17 17 20 / .18);
+    --ink-1: #111114; --ink-2: #34343b; --ink-3: #5a5a63; --ink-4: #66666f;
+    --accent: #2f63b0; --accent-ink: #2f63b0; --good: #0d8a7a; --caution: #8a6d00; --bad: #d13415;
+    --good-bg: rgb(13 138 122 / .12); --caution-bg: rgb(200 160 0 / .14); --bad-bg: rgb(209 52 21 / .10);
+    color-scheme: light;
+  }
+}
+:root[data-theme="light"] {
+  --page: #f3f3f4; --panel: #fafafb; --raised: #e9e9ec; --inset: #eeeef0;
+  --rule: rgb(17 17 20 / .10); --rule-strong: rgb(17 17 20 / .18);
+  --ink-1: #111114; --ink-2: #34343b; --ink-3: #5a5a63; --ink-4: #66666f;
+  --accent: #2f63b0; --accent-ink: #2f63b0; --good: #0d8a7a; --caution: #8a6d00; --bad: #d13415;
+  --good-bg: rgb(13 138 122 / .12); --caution-bg: rgb(200 160 0 / .14); --bad-bg: rgb(209 52 21 / .10);
+  color-scheme: light;
+}
+:root[data-theme="dark"] { color-scheme: dark; }
+* { box-sizing: border-box; }
+body { background: var(--page); color: var(--ink-1); font: 400 14px/1.5 var(--font-ui); }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 30; background: var(--page); }
+h1, h2, h3 { margin: 0; text-wrap: balance; }
+p { margin: 0; }
+a { color: var(--accent-ink); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.wrap { max-width: 1180px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+
+.nav { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; border-bottom: 1px solid var(--rule); background: color-mix(in srgb, var(--page) 88%, transparent); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); }
+.nav .wrap { height: 56px; display: flex; align-items: center; gap: 20px; }
+.mark { font: 750 14px/1 var(--font-ui); letter-spacing: .07em; white-space: nowrap; }
+.count { margin-left: auto; font: 500 12px/1 var(--font-num); color: var(--ink-4); white-space: nowrap; }
+
+main.wrap { display: grid; gap: 18px; padding-block: 20px 44px; }
+.bar { display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; }
+.pulse { font: 500 13px/1.4 var(--font-ui); color: var(--ink-3); flex: 1 1 320px; min-width: 0; }
+.pulse b { color: var(--ink-1); font-weight: 600; }
+.search { flex: 0 1 280px; font: 400 14px/1.3 var(--font-ui); color: var(--ink-1); background: var(--inset); border: 1px solid var(--rule-strong); border-radius: var(--r-control); padding: 8px 10px; min-width: 0; }
+
+/* tiles */
+.tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 270px), 1fr)); gap: 14px; }
+.tile { --i: 0; position: relative; background: var(--panel); border: 1px solid var(--rule); border-radius: var(--r-panel); padding: 16px; display: grid; gap: 12px; align-content: start; min-width: 0;
+  transition: border-color .2s var(--ease-out), background-color .2s var(--ease-out); animation: settle .55s var(--ease-out) both; animation-delay: calc(var(--i) * 45ms); }
+.tile:hover { border-color: var(--rule-strong); background: color-mix(in srgb, var(--raised) 55%, var(--panel)); }
+.tile.wide { grid-column: span 2; }
+@media (max-width: 620px) { .tile.wide { grid-column: auto; } }
+@keyframes settle { from { transform: translateY(6px); opacity: .35; } to { transform: none; opacity: 1; } }
+.top { display: flex; align-items: center; gap: 8px; }
+.lbl { font: 700 11px/1.3 var(--font-ui); text-transform: uppercase; letter-spacing: .09em; color: var(--ink-3); }
+.pill { margin-left: auto; display: inline-flex; align-items: center; gap: 6px; font: 600 11px/1 var(--font-num); border-radius: var(--r-pill); padding: 5px 9px; white-space: nowrap; background: var(--raised); color: var(--ink-2); }
+.pill::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.pill.live { color: var(--good); background: var(--good-bg); }
+.pill.live::before { animation: beat 2.4s var(--ease-out) infinite; }
+.pill.pending { color: var(--caution); background: var(--caution-bg); }
+.pill.down { color: var(--bad); background: var(--bad-bg); }
+.pill.home { color: var(--accent-ink); background: color-mix(in srgb, var(--accent) 16%, transparent); }
+@keyframes beat { 0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--good) 55%, transparent); } 60% { box-shadow: 0 0 0 5px transparent; } }
+.tile h2 { font: 700 20px/1.2 var(--font-ui); letter-spacing: -.01em; }
+.gloss { font-size: 13px; color: var(--ink-3); max-width: 60ch; }
+
+/* activity: 12 weekly bars, oldest to newest */
+.act { display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: flex-end; }
+.bars { display: flex; align-items: flex-end; gap: 3px; height: 34px; }
+.bars i { display: block; width: 6px; border-radius: 2px; background: var(--accent-ink); min-height: 2px; transform-origin: bottom; animation: grow .7s var(--ease-out) both; animation-delay: calc(var(--i) * 45ms + var(--b) * 25ms); }
+.bars i.zero { background: var(--rule-strong); }
+@keyframes grow { from { transform: scaleY(.15); } to { transform: none; } }
+.act .cap { font: 400 12px/1.4 var(--font-num); color: var(--ink-3); }
+.act .cap b { color: var(--ink-1); font-weight: 600; }
+.url { font: 400 12px/1.4 var(--font-num); color: var(--ink-4); overflow-wrap: anywhere; user-select: all; }
+.actions { display: flex; flex-wrap: wrap; gap: 6px; }
+.btn { font: 600 12px/1 var(--font-ui); border-radius: var(--r-pill); padding: 9px 13px; border: 1px solid var(--rule-strong); background: transparent; color: var(--ink-2); cursor: pointer; text-decoration: none; white-space: nowrap; display: inline-flex; align-items: center; gap: 6px;
+  transition: border-color .15s var(--ease-out), color .15s var(--ease-out), background-color .15s var(--ease-out); }
+.btn:hover { border-color: var(--accent); color: var(--ink-1); }
+.btn:active { transform: scale(.97); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.btn.primary:hover { background: color-mix(in srgb, var(--accent) 85%, black); }
+.btn[aria-disabled="true"] { opacity: .45; pointer-events: none; }
+
+/* rows inside a multi-site tile */
+.rows { display: grid; border-top: 1px solid var(--rule); }
+.row { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: 6px 14px; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--rule); }
+.row:last-child { border-bottom: 0; padding-bottom: 0; }
+.row .n { font-weight: 600; }
+.row .d { display: block; font-size: 12px; color: var(--ink-3); }
+.row .bars { height: 22px; gap: 2px; }
+.row .bars i { width: 4px; }
+.row .ago { display: block; font: 400 11px/1.3 var(--font-num); color: var(--ink-4); text-align: right; margin-top: 3px; }
+.row .actions { justify-content: flex-end; }
+@media (max-width: 520px) { .row { grid-template-columns: minmax(0, 1fr) auto; } .row .actions { grid-column: 1 / -1; justify-content: flex-start; } }
+.tile:not(.wide) .row { grid-template-columns: minmax(0, 1fr) auto; }
+.tile:not(.wide) .row .actions { grid-column: 1 / -1; justify-content: flex-start; }
+
+.empty { color: var(--ink-3); font-size: 13px; }
+.foot { border-top: 1px solid var(--rule); color: var(--ink-4); font-size: 12.5px; }
+.foot .wrap { padding-block: 20px 36px; display: grid; gap: 6px; }
+.toast { position: fixed; left: 50%; bottom: calc(20px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); background: var(--raised); color: var(--ink-1); border: 1px solid var(--rule-strong); border-radius: var(--r-pill); padding: 8px 14px; font: 500 13px/1 var(--font-ui); z-index: 40; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition-duration: .01ms !important; } }
+</style>
+
+<header class="nav">
+  <div class="wrap">
+    <span class="mark">SPRIDGEHUB</span>
+    <span class="count" id="count"></span>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="bar">
+    <p class="pulse" id="pulse"></p>
+    <input class="search" id="q" type="search" placeholder="Filter projects" aria-label="Filter projects">
+  </div>
+  <div class="tiles" id="tiles"></div>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <p>Code at <span class="url" style="display:inline">github.com/spridgehub</span>. Bars show commits per week over the last 12 weeks, oldest on the left.</p>
+    <p id="built"></p>
+  </div>
+</footer>
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+<script>
+// Filled in by build.mjs (GitHub activity and a live check of every address).
+const DATA = /*DATA*/{"built":"2026-10-24T20:39:28.792Z","groups":[{"id":"football","title":"FootballStats","brand":true,"gloss":"Every game broken down from the match data","items":[{"name":"Posh On Paper","desc":"Peterborough United · League One","url":"https://spridgehub.github.io/posh-on-paper/","repo":"spridgehub/posh-on-paper","status":"live","pushed":"2026-10-24T16:05:51Z","weeks":[0,0,0,0,0,0,0,0,0,0,12,9]},{"name":"Liverpool Look Back","desc":"Liverpool · Premier League","url":"https://spridgehub.github.io/liverpool-look-back/","repo":"spridgehub/liverpool-look-back","status":"live","pushed":"2026-10-23T22:06:24Z","weeks":[0,0,0,0,0,0,0,0,0,0,7,8]},{"name":"Brighton Pier Review","desc":"Brighton & Hove Albion · Premier League","url":"https://spridgehub.github.io/Brighton-pier-review/","repo":"spridgehub/Brighton-pier-review","status":"live","pushed":"2026-10-23T22:06:23Z","weeks":[0,0,0,0,0,0,0,0,0,0,0,4]},{"name":"Forest Facts","desc":"Nottingham Forest · Premier League","url":"https://spridgehub.github.io/Forest-facts/","repo":"spridgehub/Forest-facts","status":"live","pushed":"2026-10-23T21:06:30Z","weeks":[0,0,0,0,0,0,0,0,0,0,4,9]},{"name":"Hoops History","desc":"Celtic · Scottish Premiership","url":"https://spridgehub.github.io/Hoops-history/","repo":"spridgehub/Hoops-history","status":"live","pushed":"2026-10-23T11:41:30Z","weeks":[0,0,0,0,0,0,0,0,0,0,3,8]}]},{"id":"f1","title":"INLAP","gloss":"Formula 1 analysis after every practice, qualifying and race, with interactive replays","items":[{"name":"INLAP weekends","desc":"Formula 1","url":"https://f1inlap.github.io/f1inlap-weekends/","repo":"f1inlap/f1inlap-weekends","status":"live","pushed":"2026-10-13T11:57:10Z","weeks":[0,0,0,0,0,0,6,4,20,79,90,0]}]},{"id":"traintimes","title":"TrainTimes","gloss":"Your next trains to work or home, coloured by how often each one runs on time","items":[{"name":"TrainTimes","desc":"Trains","url":"https://spridgehub.github.io/traintimes-live/","repo":"spridgehub/traintimes-live","status":"live","pushed":"2026-10-24T20:20:30Z","weeks":[0,0,0,0,0,0,0,0,0,0,0,66]}]},{"id":"forkcast","title":"Forkcast","gloss":"Tastes, a meal plan, the shopping list and the cooking, in one place","items":[{"name":"Forkcast","desc":"Food","url":"https://spridgehub.github.io/forkcast/","repo":"spridgehub/forkcast","status":"live","pushed":"2026-10-24T04:38:06Z","weeks":[0,0,0,0,0,0,0,0,0,0,0,15]}]},{"id":"pension","title":"Pension Planner","gloss":"Retirement income desk: annuities, drawdown and 125 years of backtests","items":[{"name":"Pension Planner","desc":"Money","url":"https://spridgehub.github.io/pension-planner/","repo":"spridgehub/pension-planner","code":"https://github.com/spridgehub/pension-planner","status":"live","pushed":"2026-10-24T20:29:40Z","weeks":[0,0,0,0,0,0,0,0,0,0,0,3]}]},{"id":"plates","title":"Plates","gloss":"Training plates and food log","items":[{"name":"Plates","desc":"Fitness","url":"https://spridgehub.github.io/plates/","repo":"spridgehub/plates","pending":"waiting for the repo to be created","status":"pending"}]}]}/*END*/;
+
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const LABEL = { live: 'live', pending: 'pending', down: 'not answering', home: 'tailnet' };
+const items = DATA.groups.flatMap((g) => g.items);
+
+function ago(iso) {
+  if (!iso) return '';
+  const m = (Date.now() - new Date(iso)) / 6e4;
+  if (m < 2) return 'just now';
+  if (m < 60) return `${Math.round(m)} min ago`;
+  const h = m / 60;
+  if (h < 24) return `${Math.round(h)} h ago`;
+  const d = h / 24;
+  return d < 14 ? `${Math.round(d)} day${Math.round(d) === 1 ? '' : 's'} ago` : new Date(iso).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
+}
+function bars(weeks) {
+  if (!weeks) return '';
+  const max = Math.max(1, ...weeks);
+  return `<span class="bars" aria-label="${weeks.reduce((a, b) => a + b, 0)} commits in 12 weeks">${weeks.map((w, b) => `<i class="${w ? '' : 'zero'}" style="height:${w ? Math.max(12, (w / max) * 100) : 6}%;--b:${b}" title="${w} commit${w === 1 ? '' : 's'}"></i>`).join('')}</span>`;
+}
+function actions(i) {
+  const off = i.status === 'pending' ? ' aria-disabled="true" tabindex="-1"' : '';
+  return `<div class="actions"><a class="btn primary" href="${esc(i.url)}" target="_blank" rel="noopener"${off}>Open</a><button type="button" class="btn" data-copy="${esc(i.url)}">Copy link</button>${i.code ? `<a class="btn" href="${esc(i.code)}" target="_blank" rel="noopener">Code</a>` : ''}</div>`;
+}
+function groupStatus(g) {
+  const s = g.items.map((i) => i.status);
+  return s.includes('down') ? 'down' : s.every((x) => x === 'home') ? 'home' : s.every((x) => x === 'pending') ? 'pending' : 'live';
+}
+
+function render() {
+  const q = $('q').value.trim().toLowerCase();
+  let k = 0;
+  const html = DATA.groups.map((g) => {
+    const list = g.items.filter((i) => !q || [g.title, g.gloss, i.name, i.desc, i.url].join(' ').toLowerCase().includes(q));
+    if (!list.length) return '';
+    const st = groupStatus(g);
+    const head = `<div class="top"><span class="lbl">${esc(g.items.length > 1 ? `${g.items.length} ${g.private ? 'links' : 'sites'}` : g.items[0].desc)}</span><span class="pill ${st}">${LABEL[st]}</span></div>
+      <h2>${esc(g.title)}</h2><p class="gloss">${esc(g.gloss)}</p>`;
+    if (g.items.length === 1) {
+      const i = list[0];
+      const total = i.weeks?.reduce((a, b) => a + b, 0);
+      return `<article class="tile" style="--i:${k++}">${head}
+        ${i.weeks ? `<div class="act">${bars(i.weeks)}<span class="cap"><b>${total}</b> commits, 12 wks<br><span data-ago="${esc(i.pushed)}">updated ${ago(i.pushed)}</span></span></div>` : ''}
+        ${i.pending ? `<p class="gloss">Not published yet: ${esc(i.pending)}.</p>` : ''}
+        <span class="url">${esc(i.url.replace(/^https?:\/\//, ''))}</span>${actions(i)}</article>`;
+    }
+    return `<article class="tile${g.items.length > 2 ? ' wide' : ''}" style="--i:${k++}">${head}<div class="rows">${list.map((i) => `
+      <div class="row"><div><span class="n">${esc(i.name)}</span><span class="d">${esc(i.desc)}</span></div>
+        <div>${bars(i.weeks)}${i.pushed ? `<span class="ago" data-ago="${esc(i.pushed)}">${ago(i.pushed)}</span>` : ''}</div>
+        ${actions(i)}</div>`).join('')}</div></article>`;
+  }).join('');
+  $('tiles').innerHTML = html || '<p class="empty">No projects match that filter.</p>';
+  document.querySelectorAll('[data-copy]').forEach((b) => b.addEventListener('click', () => copy(b)));
+}
+
+function summary() {
+  const live = items.filter((i) => i.status === 'live').length;
+  const commits = items.reduce((a, i) => a + (i.weeks?.reduce((x, y) => x + y, 0) ?? 0), 0);
+  const latest = items.filter((i) => i.pushed).sort((a, b) => new Date(b.pushed) - new Date(a.pushed))[0];
+  $('count').textContent = `${live} live · ${items.filter((i) => i.status === 'pending').length} pending${items.some((i) => i.status === 'home') ? ` · ${items.filter((i) => i.status === 'home').length} home` : ''}`;
+  $('pulse').innerHTML = `<b>${DATA.groups.length} projects</b>, ${live} sites answering, <b>${commits}</b> commits in 12 weeks.${latest ? ` Latest: <b>${esc(latest.name)}</b>, <span data-ago="${esc(latest.pushed)}">${ago(latest.pushed)}</span>.` : ''}`;
+  $('built').textContent = `Addresses and activity checked ${new Date(DATA.built).toLocaleString('en-GB', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}.`;
+}
+
+// Times tick on their own; on GitHub Pages the page also asks GitHub for fresher push times.
+setInterval(() => document.querySelectorAll('[data-ago]').forEach((el) => {
+  const t = ago(el.dataset.ago);
+  el.textContent = el.closest('.cap') ? `updated ${t}` : t;
+}), 60000);
+async function refresh() {
+  if (!/github\.io$/.test(location.hostname)) return;
+  await Promise.all(items.filter((i) => i.repo).map(async (i) => {
+    try {
+      const r = await fetch(`https://api.github.com/repos/${i.repo}`);
+      if (r.ok) { const d = await r.json(); if (d.pushed_at) i.pushed = d.pushed_at; }
+    } catch (e) { /* keep built data */ }
+  }));
+  render(); summary();
+}
+
+let toastTimer;
+function toast(t) { const el = $('toast'); el.textContent = t; el.hidden = false; clearTimeout(toastTimer); toastTimer = setTimeout(() => { el.hidden = true; }, 1800); }
+function copy(btn) {
+  const url = btn.dataset.copy;
+  const fallback = () => {
+    const span = btn.closest('.tile, .row').querySelector('.url') ?? btn;
+    const r = document.createRange(); r.selectNodeContents(span);
+    const s = getSelection(); s.removeAllRanges(); s.addRange(r);
+    toast('Address selected. Press Cmd+C to copy');
+  };
+  try { navigator.clipboard.writeText(url).then(() => toast('Link copied'), fallback); } catch (e) { fallback(); }
+}
+$('q').addEventListener('input', render);
+render(); summary(); refresh();
+</script>
+</body></html>
