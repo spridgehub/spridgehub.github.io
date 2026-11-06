@@ -27,6 +27,9 @@ const GROUPS = [
   { id: 'pension', title: 'Pension Planner', gloss: 'Retirement income desk: annuities, drawdown and 125 years of backtests', items: [
     { name: 'Pension Planner', desc: 'Money', url: 'https://spridgehub.github.io/pension-planner/', repo: 'spridgehub/pension-planner', code: 'https://github.com/spridgehub/pension-planner' },
   ] },
+  { id: 'gated', title: 'Gated', gloss: 'UK analogue supercars tracked from the live adverts: prices, moves and view momentum, shared with friends', items: [
+    { name: 'Gated', desc: 'Cars', url: 'https://spridgehub.github.io/gated/', repo: 'spridgehub/gated', code: 'https://github.com/spridgehub/gated' },
+  ] },
   { id: 'plates', title: 'Plates', gloss: 'Training plates and food log', items: [
     { name: 'Plates', desc: 'Fitness', url: 'https://spridgehub.github.io/plates/', repo: 'spridgehub/plates', code: 'https://github.com/spridgehub/plates' },
   ] },
