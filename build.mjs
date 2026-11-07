@@ -32,6 +32,10 @@ const GROUPS = [
   ] },
   { id: 'plates', title: 'Plates', gloss: 'Training plates and food log', items: [
     { name: 'Plates', desc: 'Fitness', url: 'https://spridgehub.github.io/plates/', repo: 'spridgehub/plates', code: 'https://github.com/spridgehub/plates' },
+  ] },  // private: the repo is private and the app itself only runs on the tailnet, so the public tile links to the
+  // repo (opens for signed-in owners only); the tailnet link to the drive review is in private-groups.json
+  { id: 's65', title: 'S65 Diagnostics', gloss: 'E92 M3: live OBD dashboard, phone remote, guided test drive and drive review with noise analysis', items: [
+    { name: 'S65 Diagnostics', desc: 'Car', url: 'https://github.com/spridgehub/s65-diagnostics', repo: 'spridgehub/s65-diagnostics', private: true },
   ] },
 ];
 const privatePath = new URL('./private-groups.json', import.meta.url);
@@ -81,8 +85,8 @@ async function check(url) {
 for (const g of GROUPS) {
   for (const i of g.items) {
     if (g.private) { i.status = 'home'; continue; }
-    const [info, code] = await Promise.all([i.repo ? repoInfo(i.repo) : null, check(i.url)]);
-    i.status = code === 200 ? 'live' : i.pending ? 'pending' : 'down';
+    const [info, code] = await Promise.all([i.repo ? repoInfo(i.repo) : null, i.private ? 200 : check(i.url)]);
+    i.status = i.private ? 'private' : code === 200 ? 'live' : i.pending ? 'pending' : 'down';
     if (info) { i.pushed = info.pushed; i.weeks = info.weeks; }
     console.log(`${i.status.padEnd(7)} ${String(code).padEnd(4)} ${i.name}${info ? `  pushed ${info.pushed.slice(0, 10)}  ${info.weeks.join(' ')}` : ''}`);
   }

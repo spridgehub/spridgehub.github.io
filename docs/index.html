@@ -68,6 +68,11 @@ main.wrap { display: grid; gap: 18px; padding-block: 20px 44px; }
   transition: border-color .2s var(--ease-out), background-color .2s var(--ease-out); animation: settle .55s var(--ease-out) both; animation-delay: calc(var(--i) * 45ms); }
 .tile:hover { border-color: var(--rule-strong); background: color-mix(in srgb, var(--raised) 55%, var(--panel)); }
 .tile.wide { grid-column: span 2; }
+.names { margin: 0; font-size: 13px; color: var(--ink-2); line-height: 1.5; }
+dialog.drill { width: min(720px, calc(100vw - 32px)); max-height: calc(100vh - 64px); border: 1px solid var(--rule); border-radius: var(--r-panel); background: var(--panel); color: inherit; padding: 18px; }
+dialog.drill::backdrop { background: rgba(0,0,0,.55); backdrop-filter: blur(3px); }
+dialog.drill .dhead { display: flex; gap: 12px; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; }
+dialog.drill h2 { margin: 0; }
 @media (max-width: 620px) { .tile.wide { grid-column: auto; } }
 @keyframes settle { from { transform: translateY(6px); opacity: .35; } to { transform: none; opacity: 1; } }
 .top { display: flex; align-items: center; gap: 8px; }
@@ -79,6 +84,8 @@ main.wrap { display: grid; gap: 18px; padding-block: 20px 44px; }
 .pill.pending { color: var(--caution); background: var(--caution-bg); }
 .pill.down { color: var(--bad); background: var(--bad-bg); }
 .pill.home { color: var(--accent-ink); background: color-mix(in srgb, var(--accent) 16%, transparent); }
+.pill.private { color: var(--accent-ink); background: color-mix(in srgb, var(--accent) 16%, transparent); }
+.pill.private::before { content: '🔒'; background: none; width: auto; height: auto; font-size: 10px; }
 @keyframes beat { 0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--good) 55%, transparent); } 60% { box-shadow: 0 0 0 5px transparent; } }
 .tile h2 { font: 700 20px/1.2 var(--font-ui); letter-spacing: -.01em; }
 .gloss { font-size: 13px; color: var(--ink-3); max-width: 60ch; }
@@ -147,11 +154,11 @@ main.wrap { display: grid; gap: 18px; padding-block: 20px 44px; }
 
 <script>
 // Filled in by build.mjs (GitHub activity and a live check of every address).
-const DATA = /*DATA*/{"built":"2026-10-24T21:41:32.061Z","groups":[{"id":"football","title":"FootballStats","brand":true,"gloss":"Every game broken down from the match data","items":[{"name":"Posh On Paper","desc":"Peterborough United \u00b7 League One","url":"https://spridgehub.github.io/posh-on-paper/","repo":"spridgehub/posh-on-paper","status":"live","pushed":"2026-10-24T20:46:34Z","weeks":[0,0,0,0,0,0,0,0,0,0,12,10]},{"name":"Liverpool Look Back","desc":"Liverpool \u00b7 Premier League","url":"https://spridgehub.github.io/liverpool-look-back/","repo":"spridgehub/liverpool-look-back","status":"live","pushed":"2026-10-24T20:48:40Z","weeks":[0,0,0,0,0,0,0,0,0,0,7,9]},{"name":"Brighton Pier Review","desc":"Brighton & Hove Albion \u00b7 Premier League","url":"https://spridgehub.github.io/Brighton-pier-review/","repo":"spridgehub/Brighton-pier-review","status":"live","pushed":"2026-10-24T20:47:37Z","weeks":[0,0,0,0,0,0,0,0,0,0,0,5]},{"name":"Forest Facts","desc":"Nottingham Forest \u00b7 Premier League","url":"https://spridgehub.github.io/Forest-facts/","repo":"spridgehub/Forest-facts","status":"live","pushed":"2026-10-24T20:49:12Z","weeks":[0,0,0,0,0,0,0,0,0,0,4,10]},{"name":"Hoops History","desc":"Celtic \u00b7 Scottish Premiership","url":"https://spridgehub.github.io/Hoops-history/","repo":"spridgehub/Hoops-history","status":"live","pushed":"2026-10-24T20:49:46Z","weeks":[0,0,0,0,0,0,0,0,0,0,3,9]}]},{"id":"f1","title":"INLAP","gloss":"Formula 1 analysis after every practice, qualifying and race, with interactive replays","items":[{"name":"INLAP weekends","desc":"Formula 1","url":"https://f1inlap.github.io/f1inlap-weekends/","repo":"f1inlap/f1inlap-weekends","status":"live","pushed":"2026-10-13T11:57:10Z","weeks":[0,0,0,0,0,0,6,4,20,79,90,0]}]},{"id":"traintimes","title":"TrainTimes","gloss":"Your next trains to work or home, coloured by how often each one runs on time","items":[{"name":"TrainTimes","desc":"Trains","url":"https://spridgehub.github.io/traintimes-live/","repo":"spridgehub/traintimes-live","status":"live","pushed":"2026-10-24T21:40:25Z","weeks":[0,0,0,0,0,0,0,0,0,0,0,70]}]},{"id":"forkcast","title":"Forkcast","gloss":"Tastes, a meal plan, the shopping list and the cooking, in one place","items":[{"name":"Forkcast","desc":"Food","url":"https://spridgehub.github.io/forkcast/","repo":"spridgehub/forkcast","status":"live","pushed":"2026-10-24T04:38:06Z","weeks":[0,0,0,0,0,0,0,0,0,0,0,15]}]},{"id":"pension","title":"Pension Planner","gloss":"Retirement income desk: annuities, drawdown and 125 years of backtests","items":[{"name":"Pension Planner","desc":"Money","url":"https://spridgehub.github.io/pension-planner/","repo":"spridgehub/pension-planner","code":"https://github.com/spridgehub/pension-planner","status":"live","pushed":"2026-10-24T21:08:04Z","weeks":[0,0,0,0,0,0,0,0,0,0,0,5]}]},{"id":"gated","title":"Gated","gloss":"UK analogue supercars tracked from the live adverts: prices, moves and view momentum, shared with friends","items":[{"name":"Gated","desc":"Cars","url":"https://spridgehub.github.io/gated/","repo":"spridgehub/gated","code":"https://github.com/spridgehub/gated","status":"live","pushed":"2026-11-06T06:57:39Z","weeks":[0,0,0,0,0,0,0,0,0,0,0,5]}]},{"id":"plates","title":"Plates","gloss":"Training plates and food log","items":[{"name":"Plates","desc":"Fitness","url":"https://spridgehub.github.io/plates/","repo":"spridgehub/plates","code":"https://github.com/spridgehub/plates","status":"live","pushed":"2026-10-24T21:36:33Z","weeks":[0,0,0,0,0,0,0,0,0,0,0,2]}]}]}/*END*/;
+const DATA = /*DATA*/{"built":"2026-11-07T11:47:17.880Z","groups":[{"id":"football","title":"FootballStats","brand":true,"gloss":"Every game broken down from the match data","items":[{"name":"Posh On Paper","desc":"Peterborough United · League One","url":"https://spridgehub.github.io/posh-on-paper/","repo":"spridgehub/posh-on-paper","status":"live","pushed":"2026-11-03T23:06:31Z","weeks":[0,0,0,0,0,0,0,0,10,10,9,18]},{"name":"Liverpool Look Back","desc":"Liverpool · Premier League","url":"https://spridgehub.github.io/liverpool-look-back/","repo":"spridgehub/liverpool-look-back","status":"live","pushed":"2026-11-03T23:06:45Z","weeks":[0,0,0,0,0,0,0,0,5,10,9,16]},{"name":"Brighton Pier Review","desc":"Brighton & Hove Albion · Premier League","url":"https://spridgehub.github.io/Brighton-pier-review/","repo":"spridgehub/Brighton-pier-review","status":"live","pushed":"2026-11-03T23:06:44Z","weeks":[0,0,0,0,0,0,0,0,0,4,9,14]},{"name":"Forest Facts","desc":"Nottingham Forest · Premier League","url":"https://spridgehub.github.io/Forest-facts/","repo":"spridgehub/Forest-facts","status":"live","pushed":"2026-11-03T23:06:43Z","weeks":[0,0,0,0,0,0,0,0,4,9,8,14]},{"name":"Hoops History","desc":"Celtic · Scottish Premiership","url":"https://spridgehub.github.io/Hoops-history/","repo":"spridgehub/Hoops-history","status":"live","pushed":"2026-11-03T23:06:28Z","weeks":[0,0,0,0,0,0,0,0,3,8,10,12]}]},{"id":"f1","title":"INLAP","gloss":"Formula 1 analysis after every practice, qualifying and race, with interactive replays","items":[{"name":"INLAP weekends","desc":"Formula 1","url":"https://f1inlap.github.io/f1inlap-weekends/","repo":"f1inlap/f1inlap-weekends","status":"live","pushed":"2026-11-07T09:22:19Z","weeks":[0,0,0,0,0,0,0,0,60,1,96,143]}]},{"id":"traintimes","title":"TrainTimes","gloss":"Your next trains to work or home, coloured by how often each one runs on time","items":[{"name":"TrainTimes","desc":"Trains","url":"https://spridgehub.github.io/traintimes-live/","repo":"spridgehub/traintimes-live","status":"live","pushed":"2026-11-07T11:46:22Z","weeks":[0,0,0,0,0,0,0,0,0,0,0,37]}]},{"id":"forkcast","title":"Forkcast","gloss":"Tastes, a meal plan, the shopping list and the cooking, in one place","items":[{"name":"Forkcast","desc":"Food","url":"https://spridgehub.github.io/forkcast/","repo":"spridgehub/forkcast","status":"live","pushed":"2026-11-07T05:40:06Z","weeks":[0,0,0,0,0,0,0,0,0,15,7,7]}]},{"id":"pension","title":"Pension Planner","gloss":"Retirement income desk: annuities, drawdown and 125 years of backtests","items":[{"name":"Pension Planner","desc":"Money","url":"https://spridgehub.github.io/pension-planner/","repo":"spridgehub/pension-planner","code":"https://github.com/spridgehub/pension-planner","status":"live","pushed":"2026-10-24T21:08:04Z","weeks":[0,0,0,0,0,0,0,0,0,0,5,0]}]},{"id":"gated","title":"Gated","gloss":"UK analogue supercars tracked from the live adverts: prices, moves and view momentum, shared with friends","items":[{"name":"Gated","desc":"Cars","url":"https://spridgehub.github.io/gated/","repo":"spridgehub/gated","code":"https://github.com/spridgehub/gated","status":"live","pushed":"2026-11-07T06:38:09Z","weeks":[0,0,0,0,0,0,0,0,0,0,0,6]}]},{"id":"plates","title":"Plates","gloss":"Training plates and food log","items":[{"name":"Plates","desc":"Fitness","url":"https://spridgehub.github.io/plates/","repo":"spridgehub/plates","code":"https://github.com/spridgehub/plates","status":"live","pushed":"2026-10-24T21:36:33Z","weeks":[0,0,0,0,0,0,0,0,0,1,1,0]}]},{"id":"s65","title":"S65 Diagnostics","gloss":"E92 M3: live OBD dashboard, phone remote, guided test drive and drive review with noise analysis","items":[{"name":"S65 Diagnostics","desc":"Car","url":"https://github.com/spridgehub/s65-diagnostics","repo":"spridgehub/s65-diagnostics","private":true,"status":"private","pushed":"2026-11-07T11:23:28Z","weeks":[0,0,0,0,0,0,0,0,0,0,0,12]}]}]}/*END*/;
 
 const $ = (id) => document.getElementById(id);
 const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-const LABEL = { live: 'live', pending: 'pending', down: 'not answering', home: 'tailnet' };
+const LABEL = { live: 'live', pending: 'pending', down: 'not answering', home: 'tailnet', private: 'private' };
 const items = DATA.groups.flatMap((g) => g.items);
 
 function ago(iso) {
@@ -175,13 +182,13 @@ function actions(i) {
 }
 function groupStatus(g) {
   const s = g.items.map((i) => i.status);
-  return s.includes('down') ? 'down' : s.every((x) => x === 'home') ? 'home' : s.every((x) => x === 'pending') ? 'pending' : 'live';
+  return s.includes('down') ? 'down' : s.every((x) => x === 'private') ? 'private' : s.every((x) => x === 'home') ? 'home' : s.every((x) => x === 'pending') ? 'pending' : 'live';
 }
 
 function render() {
   const q = $('q').value.trim().toLowerCase();
   let k = 0;
-  const html = DATA.groups.map((g) => {
+  const html = DATA.groups.map((g, gi) => {
     const list = g.items.filter((i) => !q || [g.title, g.gloss, i.name, i.desc, i.url].join(' ').toLowerCase().includes(q));
     if (!list.length) return '';
     const st = groupStatus(g);
@@ -195,14 +202,40 @@ function render() {
         ${i.pending ? `<p class="gloss">Not published yet: ${esc(i.pending)}.</p>` : ''}
         <span class="url">${esc(i.url.replace(/^https?:\/\//, ''))}</span>${actions(i)}</article>`;
     }
-    return `<article class="tile${g.items.length > 2 ? ' wide' : ''}" style="--i:${k++}">${head}<div class="rows">${list.map((i) => `
-      <div class="row"><div><span class="n">${esc(i.name)}</span><span class="d">${esc(i.desc)}</span></div>
-        <div>${bars(i.weeks)}${i.pushed ? `<span class="ago" data-ago="${esc(i.pushed)}">${ago(i.pushed)}</span>` : ''}</div>
-        ${actions(i)}</div>`).join('')}</div></article>`;
+    if (g.items.length > 2) {
+      // many sites: a normal-size tile with the combined activity; "View all" drills into every site
+      const weeks = g.items.some((i) => i.weeks) ? g.items.reduce((acc, i) => acc.map((v, b) => v + (i.weeks?.[b] ?? 0)), Array(12).fill(0)) : null;
+      const latest = g.items.filter((i) => i.pushed).sort((a, b) => new Date(b.pushed) - new Date(a.pushed))[0];
+      const total = weeks?.reduce((a, b) => a + b, 0);
+      return `<article class="tile" style="--i:${k++}">${head}
+        ${weeks ? `<div class="act">${bars(weeks)}<span class="cap"><b>${total}</b> commits, 12 wks<br>${latest ? `<span data-ago="${esc(latest.pushed)}">updated ${ago(latest.pushed)}</span>` : ''}</span></div>` : ''}
+        <p class="names">${g.items.map((i) => esc(i.name)).join(' · ')}</p>
+        <div class="actions"><button type="button" class="btn primary" data-open="${gi}">View all ${g.items.length}</button></div></article>`;
+    }
+    return `<article class="tile" style="--i:${k++}">${head}${rowsHtml(list)}</article>`;
   }).join('');
   $('tiles').innerHTML = html || '<p class="empty">No projects match that filter.</p>';
-  document.querySelectorAll('[data-copy]').forEach((b) => b.addEventListener('click', () => copy(b)));
+  document.querySelectorAll('#tiles [data-copy]').forEach((b) => b.addEventListener('click', () => copy(b)));
+  document.querySelectorAll('[data-open]').forEach((b) => b.addEventListener('click', () => openGroup(+b.dataset.open)));
 }
+
+function rowsHtml(list) {
+  return `<div class="rows">${list.map((i) => `
+      <div class="row"><div><span class="n">${esc(i.name)}</span><span class="d">${esc(i.desc)}</span></div>
+        <div>${bars(i.weeks)}${i.pushed ? `<span class="ago" data-ago="${esc(i.pushed)}">${ago(i.pushed)}</span>` : ''}</div>
+        ${actions(i)}</div>`).join('')}</div>`;
+}
+// drill-in: every site of a group, with its own Open / Copy link / Code
+document.body.insertAdjacentHTML('beforeend', '<dialog class="drill" id="drill" aria-labelledby="drillh"><div class="dhead"><div><h2 id="drillh"></h2><p class="gloss" id="drillg"></p></div><button type="button" class="btn" id="drillx" aria-label="Close">Close</button></div><div id="drillrows"></div></dialog>');
+function openGroup(gi) {
+  const g = DATA.groups[gi], d = $('drill');
+  $('drillh').textContent = g.title; $('drillg').textContent = g.gloss;
+  $('drillrows').innerHTML = rowsHtml(g.items);
+  $('drillrows').querySelectorAll('[data-copy]').forEach((b) => b.addEventListener('click', () => copy(b)));
+  d.showModal();
+}
+$('drillx').addEventListener('click', () => $('drill').close());
+$('drill').addEventListener('click', (e) => { if (e.target === e.currentTarget) e.currentTarget.close(); });  // click outside closes
 
 function summary() {
   const live = items.filter((i) => i.status === 'live').length;
@@ -234,7 +267,7 @@ function toast(t) { const el = $('toast'); el.textContent = t; el.hidden = false
 function copy(btn) {
   const url = btn.dataset.copy;
   const fallback = () => {
-    const span = btn.closest('.tile, .row').querySelector('.url') ?? btn;
+    const span = btn.closest('.tile, .row')?.querySelector('.url') ?? btn;
     const r = document.createRange(); r.selectNodeContents(span);
     const s = getSelection(); s.removeAllRanges(); s.addRange(r);
     toast('Address selected. Press Cmd+C to copy');

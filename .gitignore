@@ -1,3 +1,5 @@
 /index.html
 /private-groups.json
 .DS_Store
+graphify-out/
+.graphifyignore
