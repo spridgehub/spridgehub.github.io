@@ -30,6 +30,9 @@ const GROUPS = [
   { id: 'gated', title: 'Gated', gloss: 'UK analogue supercars tracked from the live adverts: prices, moves and view momentum, shared with friends', items: [
     { name: 'Gated', desc: 'Cars', url: 'https://spridgehub.github.io/gated/', repo: 'spridgehub/gated', code: 'https://github.com/spridgehub/gated' },
   ] },
+  { id: 'gev', title: "God's Eye View", gloss: 'A plain-English guide to the open source live 3D globe of flights, ships, satellites and weather', items: [
+    { name: "God's Eye View guide", desc: 'Guide', url: 'https://spridgehub.github.io/gods-eye-view-guide/', repo: 'spridgehub/gods-eye-view-guide', code: 'https://github.com/bilawalsidhu/gods-eye-view' },
+  ] },
   { id: 'plates', title: 'Plates', gloss: 'Training plates and food log', items: [
     { name: 'Plates', desc: 'Fitness', url: 'https://spridgehub.github.io/plates/', repo: 'spridgehub/plates', code: 'https://github.com/spridgehub/plates' },
   ] },  // private: the repo is private and the app itself only runs on the tailnet, so the public tile links to the
